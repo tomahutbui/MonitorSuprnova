@@ -10,7 +10,15 @@ namespace MonitorSuprnova_Console
     {
         static void Main(string[] args)
         {
+            DataAccess.WorkerModel.OnStart();
+            Console.Read();
+            while (true)
+            {
+                Console.WriteLine(DataAccess.DA.GetData());
 
+                Console.Read();
+            }
+            
         }
     }
 }
