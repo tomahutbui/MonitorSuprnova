@@ -59,7 +59,7 @@ namespace DataAccess
             string mes = "[FIRST START]" + Environment.NewLine;
             foreach (var w in WorkerModel.BaseWorkers)
             {
-                mes += $"{w.username} => {(w.hashrate == 0 ? "STOPPED" : "STARTED")}{Environment.NewLine}";
+                mes += $"{w.username} => {(w.hashrate.Equals(0) ? "STOPPED" : "STARTED")}{Environment.NewLine}";
                 w.IsMonitor = w.hashrate > 0;
             }
                 
@@ -77,7 +77,7 @@ namespace DataAccess
                 {
                     if (currentW.hashrate > 0)
                     {
-                        mes += $"{currentW.username} => STARTED";
+                        mes += $"{currentW.username} => STARTED{Environment.NewLine}";
                         currentW.IsMonitor = true;
                     }
                     else
@@ -93,7 +93,7 @@ namespace DataAccess
                     {
                         if (currentW.hashrate > 0)
                         {
-                            mes += $"{currentW.username} => STARTED";
+                            mes += $"{currentW.username} => STARTED{Environment.NewLine}";
                             currentW.IsMonitor = true;
                         }
                         WorkerModel.BaseWorkers[index] = currentW;
@@ -101,18 +101,23 @@ namespace DataAccess
                     }
                     else
                     {
-                        if (currentW.hashrate == 0)
+                        if (currentW.hashrate.Equals(0))
                         {
-                            mes += $"{currentW.username} => STOPPED";
+                            mes += $"{currentW.username} => STOPPED{Environment.NewLine}";
                             currentW.IsMonitor = false;
                         }
+                        else currentW.IsMonitor = true;
                         WorkerModel.BaseWorkers[index] = currentW;
                         continue;
                     }
                 }
             }
-            if(!string.IsNullOrEmpty(mes))
+            if (!string.IsNullOrEmpty(mes))
+            {
+                Console.WriteLine(mes);
                 await WorkerModel.SendMessage(mes);
+            }
+                
             return true;
         }
 

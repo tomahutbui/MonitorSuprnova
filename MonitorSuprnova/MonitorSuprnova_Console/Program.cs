@@ -11,14 +11,16 @@ namespace MonitorSuprnova_Console
         static void Main(string[] args)
         {
             DataAccess.WorkerModel.OnStart();
-            Console.Read();
-            while (true)
+            Task.Run(async() =>
             {
-                Console.WriteLine(DataAccess.DA.GetData());
+                while (true)
+                {
+                    await DataAccess.WorkerModel.ProcessData();
 
-                Console.Read();
-            }
-            
+                    await Task.Delay(10000);
+                }
+            });
+            Console.Read();
         }
     }
 }
